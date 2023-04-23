@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, InputLayer, LSTM, Bidirectional
+from tensorflow.keras.layers import Dense, InputLayer, LSTM, Bidirectional, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping
 from scipy.stats import zscore
@@ -117,10 +117,16 @@ def design_model(X):
     model.add(InputLayer(input_shape = (X.shape[1],1)))
     # Create LSTM layer
     model.add(Bidirectional(LSTM(256, activation = 'tanh')))
+    # Create Dropout layer
+    model.add(Dropout(0.2))
     # Create Dense layer
     model.add(Dense(128, activation = 'relu'))
+    # Create Dropout layer
+    model.add(Dropout(0.2))
     # Create Dense layer
     model.add(Dense(64, activation = 'relu'))
+    # Create Dropout layer
+    model.add(Dropout(0.2))
     # # Create Dense layer
     model.add(Dense(32, activation = 'relu'))
     # Creat output layer 
@@ -202,7 +208,7 @@ ax2.legend(['Train', 'Validation'], loc='upper left')
 
 # Plot confusion matrix
 cm = confusion_matrix(y_test, y_pred)
-fig, ax3 = plt.subplots(figsize=(15, 15))
+fig, ax3 = plt.subplots(figsize=(5, 5))
 heatmap = sns.heatmap(
     cm, 
     fmt = 'g', 
