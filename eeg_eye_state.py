@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, InputLayer, LSTM
+from tensorflow.keras.layers import Dense, InputLayer, LSTM, Bidirectional
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping
 from scipy.stats import zscore
@@ -116,13 +116,13 @@ def design_model(X):
     # Create input layer
     model.add(InputLayer(input_shape = (X.shape[1],1)))
     # Create LSTM layer
-    model.add(LSTM(64, activation = 'relu'))
+    model.add(Bidirectional(LSTM(256, activation = 'tanh')))
     # Create Dense layer
-    model.add(Dense(32, activation = 'relu'))
+    model.add(Dense(128, activation = 'relu'))
     # Create Dense layer
-    model.add(Dense(16, activation = 'relu'))
+    model.add(Dense(64, activation = 'relu'))
     # # Create Dense layer
-    # model.add(Dense(8, activation = 'relu'))
+    model.add(Dense(32, activation = 'relu'))
     # Creat output layer 
     model.add(Dense(1, activation = 'sigmoid'))
     
@@ -134,6 +134,7 @@ def design_model(X):
         optimizer = opt,
         metrics = ['accuracy']
         )
+    
     return model
 
 # Apply the model
